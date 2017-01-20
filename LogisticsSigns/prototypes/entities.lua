@@ -3,7 +3,7 @@ require("config")
 sign_entities = {}
 
 sign_entity = {
-    type = "decorative",
+    type = "simple-entity",
     name = "util-sign",
     icon = "__LogisticsSigns__/graphics/icons/sign-icon.png",
     flags = {"placeable-neutral"},
@@ -31,7 +31,7 @@ sign_entity = {
 table.insert(sign_entities, sign_entity)
 
 sign_large_metal_entity = {
-    type = "decorative",
+    type = "simple-entity",
     name = "util-sign-large",
     icon = "__LogisticsSigns__/graphics/icons/sign-large-metal-icon.png",
     flags = {"placeable-neutral"},
@@ -60,7 +60,7 @@ sign_large_metal_entity = {
 table.insert(sign_entities, sign_large_metal_entity)
 
 sign_small_entity = {
-   type = "decorative",
+   type = "simple-entity",
    name = "util-sign-small",
    icon = "__LogisticsSigns__/graphics/icons/sign-small-icon.png",
    flags = {"placeable-neutral"},
@@ -90,10 +90,12 @@ table.insert(sign_entities, sign_small_entity)
 for i = FIRSTASCII, LASTASCII do
 
 	letter = {
-		type = "decorative",
+		type = "simple-entity",
 		name = "ascii" .. i,
 		flags = {"placeable-off-grid", "not-on-map"},
+		collision_mask = {},
 		selectable_in_game = false,
+		max_health = 1000,
 		render_layer = "higher-object-above",
 		pictures =
 		{
@@ -115,17 +117,20 @@ for i, icon in pairs(ICONS) do
   for _, object in pairs(data.raw[icon]) do
 
     notice_icon = {
-        type = "decorative",
+        type = "simple-entity",
         name = "icon-notice-" .. object.name,
         flags = {"placeable-off-grid", "not-on-map"},
+		collision_mask = {},
         selectable_in_game = false,
         render_layer = "higher-object-above",
+		max_health = 1000,
         pictures =
         {
           filename = object.icon,
           priority = "medium",
           width = 32,
-          height = 32
+          height = 32,
+		  scale = 0.8,
         }
     }
 

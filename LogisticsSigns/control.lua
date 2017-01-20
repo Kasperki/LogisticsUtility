@@ -29,13 +29,13 @@ script.on_event(defines.events.on_built_entity, function(event)
 end)
 
 -- Destroy text string when the sign is destroyed
-script.on_event(defines.events.on_preplayer_mined_item, function(event)
-    if event.entity.name == "util-sign" or event.entity.name == "util-sign-large" or  event.entity.name == "util-sign-small" then
+function on_destroyed(event)
+	if event.entity.name == "util-sign" or event.entity.name == "util-sign-large" or  event.entity.name == "util-sign-small" then
         for i = 1, #global.signs do
             if event.entity == global.signs[i].sign then
 
               for j = 1, #global.signs[i].objects do
-                global.signs[i].objects[j].destroy();
+                if global.signs[i].objects[j].valid then global.signs[i].objects[j].destroy(); end
               end
 
               table.remove(global.signs, i);
@@ -48,7 +48,11 @@ script.on_event(defines.events.on_preplayer_mined_item, function(event)
           gui = nil;
         end
     end
-end)
+end
+
+script.on_event(defines.events.on_preplayer_mined_item, on_destroyed)
+script.on_event(defines.events.on_robot_pre_mined, on_destroyed)
+script.on_event(defines.events.on_entity_died, on_destroyed)
 
 -- CREATE SIGNPOST GUI FOR WRITING TEXT
 function create_gui(player_index)
@@ -124,7 +128,10 @@ function create_sign_text(str, pos, parent)
           index = i - 1;
           offsetY = math.floor(index / lettersPerLine) * SPACING_VERTICAL - startingHeight;
           offsetX = index % lettersPerLine * SPACING_HORIZONTAL - startingWidth;
-          table.insert(strings, game.surfaces[1].create_entity{name = "ascii" .. string.byte(char), position =  {pos.x + offsetX, pos.y + offsetY}});
+		  
+		  local letter_entity = parent.surface.create_entity{name = "ascii" .. string.byte(char), position = {pos.x + offsetX, pos.y + offsetY}};
+		  letter_entity.destructible = false;
+          table.insert(strings, letter_entity);
     end
       table.insert(global.signs, {sign = parent, objects = strings});
   end
@@ -136,7 +143,9 @@ end
  --parent: the entity that owns this icon
 function create_sign_icon(icon, pos, parent)
    offsetX = 0;
-   offsetY = 0.75;
-   icon_entity = game.surfaces[1].create_entity{ name = icon, position = {pos.x - offsetX, pos.y - offsetY} };
+   offsetY = 0.8;
+   
+   icon_entity = parent.surface.create_entity{ name = icon, position = {pos.x - offsetX, pos.y - offsetY} };
+   icon_entity.destructible = false;
    table.insert(global.signs, {sign = parent, objects = {icon_entity}});
 end
