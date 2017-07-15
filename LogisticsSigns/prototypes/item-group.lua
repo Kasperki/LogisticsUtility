@@ -6,6 +6,7 @@ data:extend({
   	 order = "z",
   	 inventory_order = "z",
   	 icon = "__LogisticsSigns__/graphics/utilities-subgroup.png",
+	 icon_size = 64,
     },
     {
   	 -- row for signs

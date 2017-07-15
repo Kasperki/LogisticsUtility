@@ -64,9 +64,11 @@ for i, icon in pairs(ICONS) do
 end
 
 data:extend({{
-	type = "flying-text",
+	type = "item",
 	name = "SIGNPOST_ICONS",
-	time_to_live = 0,
-	speed = 1,
-	order = serpent.dump(icons)
+	icon = "__LogisticsSigns__/graphics/icons/sign-icon.png",
+	stack_size = 1,
+	flags = {"hidden"},
+	order = "zzz",
+	localised_description = {serpent.dump(icons)}
 }})

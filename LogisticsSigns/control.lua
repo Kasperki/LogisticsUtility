@@ -12,7 +12,7 @@ function init()
     global.last_built=global.last_built or {}
 
     if global.icons == nil then
-      global.icons = loadstring(game.entity_prototypes["SIGNPOST_ICONS"].order)()
+      global.icons = loadstring(game.item_prototypes["SIGNPOST_ICONS"].localised_description[1])()
     end
 end
 script.on_init(function() init() end)
